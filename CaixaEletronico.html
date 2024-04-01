@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Banco HL</title>
-  </head>
-  <body></body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banco HL</title>
+</head>
+
+<body></body>
+
 </html>
 
 <head>
@@ -15,12 +18,15 @@
     alert("Olá, " + nome + ", é um prazer ter você em nosso banco");
 
     // - Na função "inicio", utilize escolha/caso (switch/case) para validar a opção escolhida pelo usuário.
+
+    // - No menu principal, a ordem das opções deve ser: Saldo, Extrato, Saque, Depósito, Transferência e Sair. 
+
     var saldo = 100.5;
 
     function inicio() {
-      var escolha = parseFloat(
+      var escolha = parseInt(
         prompt(
-          "Selecione uma opção: 1.Saldo) 2.Deposito) 3.Saque) 4.Extrato) 5.Transferência) 6. Sair.) "
+          "Selecione uma opção: 1.Saldo) 2.Extrato) 3.Saque) 4.Depósito) 5.Transferência) 6. Sair.) "
         )
       );
 
@@ -29,13 +35,13 @@
           ver_saldo();
           break;
         case 2:
-          fazer_deposito();
+          ver_extrato();
           break;
         case 3:
           fazer_saque();
           break;
         case 4:
-          ver_extrato();
+          fazer_deposito();
           break;
         case 5:
           fazer_transferencia();
@@ -47,41 +53,15 @@
           erro();
       }
     }
+
+    // - Sempre que o usuário for acessar o saldo, sacar, retirar o extrato ou transferir dinheiro é necessário que ele informe uma senha. 
+    // Essa senha deve ser validada com uma condicional. A senha é 3589.
+
     function ver_saldo() {
       alert("Seu saldo atual é: " + saldo);
+      inicio();
     }
-    inicio();
-
-    function fazer_deposito() {
-      var deposito = parseFloat(prompt("Qual o valor para depósito?"));
-      if (isNaN(deposito) || deposito === "") {
-        alert("Por favor, informe um número:");
-        fazer_deposito();
-      } else {
-        saldo += deposito;
-        ver_saldo();
-      }
-    }
-    fazer_deposito();
-
-    /* - Sempre que o usuário for sacar dinheiro, o valor restante não pode ser negativo, ou seja, caso o usuário tente sacar mais do que tem
-     em saldo, a ação não deve ocorrer. Exiba uma mensagem de "Operação não autorizada".
-
-     - Sempre que o usuário for sacar dinheiro, o valor a ser sacado não pode ser igual ou menor que zero.
-     Exiba uma mensagem de "Operação não autorizada". */
-
-    function fazer_saque() {
-      var valorSaque = parseFloat(prompt("Qual valor você deseja sacar:"));
-      if (valorSaque > 0) {
-        if (valorSaque <= saldo) {
-          saldo -= ValorSaque;
-          alert("Saque realizado. Novo saldo: " + saldo);
-        }
-      } else {
-        alert("Operação não autorizada.");
-      }
-    }
-    fazer_saque();
+    // inicio();
 
     // - Adicionar a opção para ver o extrato (Coloque algumas compras ou depósitos fictícios).
 
@@ -101,10 +81,44 @@
     // }
     // ver_extrato();
 
+
+    /* - Sempre que o usuário for sacar dinheiro, o valor restante não pode ser negativo, ou seja, caso o usuário tente sacar mais do que tem
+     em saldo, a ação não deve ocorrer. Exiba uma mensagem de "Operação não autorizada".
+
+     - Sempre que o usuário for sacar dinheiro, o valor a ser sacado não pode ser igual ou menor que zero.
+     Exiba uma mensagem de "Operação não autorizada". */
+
+    function fazer_saque() {
+      var valorSaque = parseFloat(prompt("Qual valor você deseja sacar:"));
+      if (valorSaque > 0) {
+        if (valorSaque <= saldo) {
+          saldo -= ValorSaque;
+          alert("Saque realizado. Novo saldo: " + saldo);
+        }
+      } else {
+        alert("Operação não autorizada.");
+      }
+      inicio();
+    }
+    // - Caso o usuário informe um valor para depósito igual ou menor que zero, não deixe a operação ocorrer. 
+    // Exiba uma mensagem de "Operação não autorizada". 
+
+    function fazer_deposito(){
+      var deposito = parseFloat(prompt("Qual o valor para o depósito?"));
+      if (deposito > 0){
+        if (deposito <= saldo){
+          saldo += deposito;
+          alert("Depósito concluido" + saldo)
+        }
+      } else{alert("Operação não autorizada")}
+      inicio();
+    }
+
+
     /* - Adicionar a opção para fazer uma transferência. A transferência consiste em você informar o número de uma conta 
-	(pode ser qualquer número, mas obrigatoriamente um número, ou seja, nenhum outro caractere deve ser aceito), 
-	perguntar o valor da transferência e remover o valor da conta da mesma forma como na ação do saldo. Caso o usuário tente transferir mais 
-	do que tem em saldo, a ação não deve ocorrer. Exiba uma mensagem de "Operação não autorizada".*/
+  (pode ser qualquer número, mas obrigatoriamente um número, ou seja, nenhum outro caractere deve ser aceito), 
+  perguntar o valor da transferência e remover o valor da conta da mesma forma como na ação do saldo. Caso o usuário tente transferir mais 
+  do que tem em saldo, a ação não deve ocorrer. Exiba uma mensagem de "Operação não autorizada".*/
 
     function fazer_transferencia() {
       var numeroConta = prompt("Informe o número da conta destino:");
@@ -129,25 +143,32 @@
       alert(
         "Transferência realizada com sucesso. Novo saldo: " + saldo.toFixed(2)
       );
+      inicio();
     }
-    fazer_transferencia();
+    // fazer_transferencia();
 
-    // function erro() {
-    //   alert("Por favor, informe um número entre 1 e 4");
-    //   inicio();
-    // }
+    // - Atualize a função "erro" com as novas opções do menu.
 
-    // function sair() {
-    //   var confirma = confirm("Você deseja sair?");
-    //   if (confirma) {
-    //     window.close();
-    //   } else {
-    //     inicio();
-    //   }
-    // }
+    function erro() {
+      alert("Por favor, informe um número entre 1 e 6");
+      inicio();
+    }
 
-    // inicio();
+    // - Quando o usuário escolher sair do sistema, exiba uma mensagem agradecendo por utilizar os serviços do banco: 
+    // "{Nome}, foi um prazer ter você por aqui!".
+
+    function sair() {
+      var confirma = confirm("Você deseja sair?");
+      if (confirma) {
+        window.close();
+        alert(nome + ", foi um prazer ter você por aqui!")
+      } else {
+        inicio();
+      }
+    }
+
+    inicio();
   </script>
 
-  <body></body>
+<body></body>
 </head>
